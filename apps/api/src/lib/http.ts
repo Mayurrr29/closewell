@@ -36,3 +36,15 @@ export function coarseIp(ip: string | undefined): string | undefined {
   if (/^\d+\.\d+\.\d+\.\d+$/.test(v4)) return v4.split('.').slice(0, 3).join('.') + '.0';
   return ip.split(':').slice(0, 3).join(':') + '::';
 }
+
+/**
+ * Env values are strings, but Express only treats a NUMBER as "trust N proxy hops"
+ * (a string is read as a list of trusted addresses). "2" -> 2, "true"/"false" -> booleans.
+ */
+export function parseTrustProxy(raw: string): number | boolean | string {
+  const v = raw.trim();
+  if (/^\d+$/.test(v)) return Number(v);
+  if (v === 'true') return true;
+  if (v === 'false') return false;
+  return v;
+}

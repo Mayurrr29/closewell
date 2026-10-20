@@ -8,6 +8,7 @@ import express, { Router } from 'express';
 import helmet from 'helmet';
 import { pinoHttp } from 'pino-http';
 import { env } from './config/env';
+import { parseTrustProxy } from './lib/http';
 import { logger } from './lib/logger';
 import { errorHandler, notFoundHandler } from './middleware/errors';
 import { apiLimiter } from './middleware/rateLimit';
@@ -23,7 +24,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 export function createApp() {
   const app = express();
   app.disable('x-powered-by');
-  app.set('trust proxy', env.TRUST_PROXY);
+  app.set('trust proxy', parseTrustProxy(env.TRUST_PROXY));
 
   app.use((req, res, next) => {
     req.id = (req.get('x-request-id') ?? '').slice(0, 64) || randomUUID();
@@ -47,6 +48,12 @@ export function createApp() {
       crossOriginResourcePolicy: { policy: 'same-site' },
     }),
   );
+
+  // API responses are per-user and must never be stored by a CDN or proxy (e.g. a Vercel rewrite).
+  app.use('/api', (_req, res, next) => {
+    res.setHeader('Cache-Control', 'no-store');
+    next();
+  });
 
   // ---- Public widget surface: its own CORS policy, validated per widget against allowed domains ----
   app.get('/widget.js', widgetScriptHandler);
