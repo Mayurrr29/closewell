@@ -72,5 +72,6 @@ docs/         Architecture, setup, API, integrations, security, testing, deploym
 - [Integrations and modes](docs/integrations.md)
 - [Security and privacy](docs/security.md)
 - [Lead scoring rules](docs/lead-scoring.md) · [Billing and limits](docs/billing.md)
+- [Deploy for free (Vercel + Render + Atlas)](docs/deploy-render-vercel.md)
 - [Testing](docs/testing.md) · [Deployment](docs/deployment.md) · [Troubleshooting](docs/troubleshooting.md)
 - [Completion report](docs/status.md)

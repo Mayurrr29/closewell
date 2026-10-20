@@ -1,5 +1,9 @@
 # Deployment
 
+**Free hosting:** see [Deploy for free: Vercel + Render + MongoDB Atlas](deploy-render-vercel.md), with step-by-step instructions and the config files already in the repo (`render.yaml`, `apps/web/vercel.json`).
+
+The rest of this page covers running everything as a single service.
+
 The app deploys as **one Node service** plus MongoDB. The API serves the built web app and `widget.js`, which keeps the refresh cookie first-party.
 
 ## Build and run
@@ -12,7 +16,7 @@ NODE_ENV=production node apps/api/dist/server.js
 
 ## Production configuration
 
-Required: `NODE_ENV=production`, `MONGODB_URI`, `JWT_ACCESS_SECRET` (32+ chars), `ENCRYPTION_KEY` (32 bytes base64), `APP_ORIGIN` and `API_PUBLIC_URL` (both your public https URL when served together), `TRUST_PROXY` (e.g. `1` behind one proxy). The API refuses to start without the secrets.
+Required: `NODE_ENV=production`, `MONGODB_URI`, `JWT_ACCESS_SECRET` (32+ chars), `ENCRYPTION_KEY` (32 bytes base64), `APP_ORIGIN` and `API_PUBLIC_URL` (both your public https URL when served together), `TRUST_PROXY` (the number of proxies in front of the API, e.g. `1`; `2` for Vercel in front of Render). The API refuses to start without the secrets.
 
 Strongly recommended: `EMAIL_MODE=smtp` with SMTP settings (otherwise verification emails are not delivered), `AI_PROVIDER=openai` with a key, `AI_PRICE_TABLE`.
 
