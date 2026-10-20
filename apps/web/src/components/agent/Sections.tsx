@@ -187,8 +187,8 @@ export function RulesSection({ cfg, onChange, tools, disabled }: P & { tools: To
           {tools.map((t) => {
             const mode = (cfg.tools[t.name] ?? t.defaultMode) as ToolMode;
             return (
-              <li key={t.name} className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
-                <div className="min-w-0 flex-1">
+              <li key={t.name} className="grid items-center gap-3 px-4 py-3 sm:grid-cols-[1fr_11rem]">
+                <div className="min-w-0">
                   <p className="flex flex-wrap items-center gap-2 text-sm font-medium">
                     {t.label}
                     <Badge tone={CAT[t.category].tone}>{CAT[t.category].label}</Badge>
@@ -196,7 +196,7 @@ export function RulesSection({ cfg, onChange, tools, disabled }: P & { tools: To
                   </p>
                   <p className="text-sm text-muted">{t.description}</p>
                 </div>
-                <Select aria-label={`${t.label} permission`} className="w-44" value={mode} disabled={disabled || t.allowedModes.length < 2} onChange={(e) => onChange(update(cfg, (c) => (c.tools[t.name] = e.target.value as ToolMode)))}>
+                <Select aria-label={`${t.label} permission`} className="w-full" value={mode} disabled={disabled || t.allowedModes.length < 2} onChange={(e) => onChange(update(cfg, (c) => (c.tools[t.name] = e.target.value as ToolMode)))}>
                   {t.allowedModes.map((m) => <option key={m} value={m}>{MODE_LABEL[m]}</option>)}
                 </Select>
               </li>

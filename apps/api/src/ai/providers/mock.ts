@@ -104,14 +104,16 @@ export class MockProvider implements AiProvider {
       case 'search_knowledge': {
         const top = d.results?.[0];
         if (!top) return { content: `I don't have verified information about that, so I don't want to guess. I can ask our team to confirm — would that help?`, toolCalls: [] };
-        const text = String(top.text).replace(/\s+/g, ' ').slice(0, 320);
-        return { content: `Here's what our information says (${top.title}): ${text}${followUp}`, toolCalls: [] };
+        const raw = String(top.text);
+        const faq = raw.match(/^Q: [^\n]*\nA: ([\s\S]*)$/);
+        const text = (faq ? faq[1] : raw).replace(/\s+/g, ' ').trim().slice(0, 320);
+        return { content: faq ? `${text}${followUp}` : `Here's what our information says (${top.title}): ${text}${followUp}`, toolCalls: [] };
       }
       case 'get_products': {
         const ps = (d.products ?? []) as any[];
         if (!ps.length) return { content: `I couldn't find a matching product or service in our catalogue. Could you tell me a bit more about what you need?`, toolCalls: [] };
         const lines = ps.slice(0, 4).map((p) => `• ${p.name}: ${p.priceText}${p.availability !== 'available' ? ` (${p.availability})` : ''}`);
-        return { content: `Here are the options that match:\n${lines.join('\n')}${followUp}`, toolCalls: [] };
+        return { content: `Here are the options that match:\n${lines.join('\n')}${followUp ? `\n\n${followUp.trim()}` : ''}`, toolCalls: [] };
       }
       case 'record_lead_details':
         return { content: `Thanks, I've noted your details.${followUp || ' How else can I help?'}`, toolCalls: [] };

@@ -112,7 +112,7 @@ export default function Dashboard() {
             <Stat label="AI replies" value={String(m.ai_messages)} definition={d.ai_messages} />
             <Stat
               label="Estimated AI cost"
-              value={m.ai_cost === null ? 'Unknown' : `$${m.ai_cost.toFixed(m.ai_cost < 1 ? 4 : 2)}`}
+              value={m.ai_cost === null ? 'Unknown' : `$${m.ai_cost.toFixed(m.ai_cost > 0 && m.ai_cost < 1 ? 4 : 2)}`}
               definition={`${d.ai_cost}${m.ai_cost_unpriced_runs ? ` ${m.ai_cost_unpriced_runs} replies used a model with no configured price.` : ''}`}
             />
           </div>

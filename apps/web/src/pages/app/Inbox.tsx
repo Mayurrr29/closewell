@@ -52,12 +52,13 @@ const name = (c: Pick<Conv, 'contact'>) => c.contact?.name || c.contact?.email |
 export default function Inbox() {
   const orgId = useOrgId();
   const { conversationId } = useParams();
-  const [filters, setFilters] = useState({ status: 'open', mode: '', escalated: false, q: '', mine: false });
+  const [filters, setFilters] = useState({ status: 'open', mode: '', escalated: false, q: '', mine: false, test: false });
   const params = new URLSearchParams({ status: filters.status, pageSize: '50' });
   if (filters.mode) params.set('aiMode', filters.mode);
   if (filters.escalated) params.set('escalated', 'true');
   if (filters.q) params.set('q', filters.q);
   if (filters.mine) params.set('assignedTo', 'me');
+  if (filters.test) params.set('includeTest', 'true');
   const list = useQuery({ queryKey: ['conversations', orgId, params.toString()], queryFn: () => api.list<Conv>(`/orgs/${orgId}/conversations?${params}`), refetchInterval: 10_000 });
 
   return (
@@ -84,6 +85,7 @@ export default function Inbox() {
               </Select>
               <label className="flex items-center gap-1.5 text-xs"><input type="checkbox" checked={filters.escalated} onChange={(e) => setFilters({ ...filters, escalated: e.target.checked })} /> Needs a person</label>
               <label className="flex items-center gap-1.5 text-xs"><input type="checkbox" checked={filters.mine} onChange={(e) => setFilters({ ...filters, mine: e.target.checked })} /> Assigned to me</label>
+              <label className="flex items-center gap-1.5 text-xs"><input type="checkbox" checked={filters.test} onChange={(e) => setFilters({ ...filters, test: e.target.checked })} /> Show tests and previews</label>
             </div>
           </div>
           <div className="max-h-[calc(100vh-260px)] min-h-64 overflow-y-auto">

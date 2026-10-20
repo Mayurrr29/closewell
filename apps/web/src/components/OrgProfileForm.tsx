@@ -8,12 +8,17 @@ import { Button, ErrorState, Field, Input, Select, Textarea } from './ui';
 
 type Values = z.input<typeof orgProfileSchema>;
 
+// Some browsers list legacy names (e.g. Asia/Calcutta). Always include current canonical names and the user's own zone.
+const COMMON_ZONES = ['UTC', 'Asia/Kolkata', 'Asia/Kathmandu', 'Asia/Ho_Chi_Minh', 'Europe/Kyiv', 'America/New_York', 'Europe/London'];
 const TIMEZONES: string[] = (() => {
+  let list: string[] = [];
   try {
-    return (Intl as unknown as { supportedValuesOf(k: string): string[] }).supportedValuesOf('timeZone');
+    list = (Intl as unknown as { supportedValuesOf(k: string): string[] }).supportedValuesOf('timeZone');
   } catch {
-    return ['UTC', 'Asia/Kolkata', 'Europe/London', 'America/New_York'];
+    /* older browsers */
   }
+  const own = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  return [...new Set([...list, ...COMMON_ZONES, ...(own ? [own] : [])])].sort();
 })();
 
 export function OrgProfileForm({ defaults, submitLabel, onSubmit }: { defaults?: Partial<Values>; submitLabel: string; onSubmit: (v: Values) => Promise<unknown> }) {

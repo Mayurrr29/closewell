@@ -178,7 +178,7 @@ function TestStep({ onNext }: { onNext: () => Promise<void> }) {
   if (a.isLoading || !a.detail.data) return <Spinner />;
   return (
     <StepFrame title="Test conversation" text="Chat with your draft agent. Check that answers, prices and approvals behave the way you expect.">
-      <Playground orgId={a.orgId} agentId={a.agentId!} providerMode={a.detail.data.provider.mode} providerLabel={a.detail.data.provider.label} onRan={() => setRan(true)} />
+      <Playground orgId={a.orgId} agentId={a.agentId!} providerMode={a.detail.data.provider.mode} onRan={() => setRan(true)} />
       <div className="mt-6">
         <Button disabled={!ran && !a.detail.data.lastSimulationAt} onClick={() => void onNext()}>Looks right, continue</Button>
       </div>
