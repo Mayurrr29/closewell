@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate, useNavigate, useSearchParams } from 'react-router';
 import { z } from 'zod';
@@ -163,7 +163,11 @@ function Verify() {
   const { reload, status } = useAuth();
   const [state, setState] = useState<'working' | 'done' | 'error'>('working');
   const [error, setError] = useState('');
+  // One-time tokens must be submitted exactly once (effects can run twice, e.g. in React StrictMode).
+  const started = useRef(false);
   useEffect(() => {
+    if (started.current) return;
+    started.current = true;
     api
       .post('/auth/verify-email', { token: params.get('token') ?? '' })
       .then(async () => {

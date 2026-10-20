@@ -37,8 +37,8 @@ export function createApp() {
         useDefaults: true,
         directives: {
           'script-src': ["'self'"],
-          'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-          'font-src': ["'self'", 'https://fonts.gstatic.com', 'data:'],
+          'style-src': ["'self'", "'unsafe-inline'"],
+          'font-src': ["'self'", 'data:'],
           'img-src': ["'self'", 'data:'],
           'connect-src': ["'self'"],
           'frame-ancestors': ["'none'"],

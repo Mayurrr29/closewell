@@ -5,6 +5,8 @@ import { Navigate, RouterProvider, createBrowserRouter, useLocation } from 'reac
 import { ApiError } from './lib/api';
 import { AuthProvider, useAuth } from './lib/auth';
 import { Spinner, ToastProvider } from './components/ui';
+import '@fontsource-variable/schibsted-grotesk/wght.css';
+import '@fontsource-variable/schibsted-grotesk/wght-italic.css';
 import './styles.css';
 
 const Home = lazy(() => import('./pages/marketing/Home'));

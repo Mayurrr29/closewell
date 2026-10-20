@@ -11,7 +11,7 @@ import { sha256 } from '../../lib/crypto';
 import { AppError } from '../../lib/errors';
 import { body, ok } from '../../lib/http';
 import { requireAuth } from '../../middleware/auth';
-import { emailLimiter, loginLimiter, registerLimiter } from '../../middleware/rateLimit';
+import { emailLimiter, loginLimiter, registerLimiter, tokenLimiter } from '../../middleware/rateLimit';
 import { Session, User } from '../../models/identity';
 import {
   clearRefreshCookie,
@@ -75,7 +75,7 @@ authRouter.get('/me', requireAuth, async (req, res) => {
   res.json(ok({ user: publicUser(user), memberships: await membershipsFor(user._id) }));
 });
 
-authRouter.post('/verify-email', emailLimiter, async (req, res) => {
+authRouter.post('/verify-email', tokenLimiter, async (req, res) => {
   const { token } = body(req, verifyEmailSchema);
   const userId = await consumeOneTimeToken(token, 'verify_email');
   await User.updateOne({ _id: userId, emailVerifiedAt: null }, { $set: { emailVerifiedAt: new Date() } });
@@ -96,7 +96,7 @@ authRouter.post('/forgot-password', emailLimiter, async (req, res) => {
   res.json(ok({ message: 'If an account exists for that email, a reset link is on its way.' }));
 });
 
-authRouter.post('/reset-password', emailLimiter, async (req, res) => {
+authRouter.post('/reset-password', tokenLimiter, async (req, res) => {
   const input = body(req, resetPasswordSchema);
   const userId = await consumeOneTimeToken(input.token, 'reset_password');
   await User.updateOne({ _id: userId }, { $set: { passwordHash: await hashPassword(input.password), failedLogins: 0, lockedUntil: null } });

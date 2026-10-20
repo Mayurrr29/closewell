@@ -5,7 +5,7 @@
 /* Design tokens. Status colours carry product meaning:
    pine = allowed / done, ochre = needs approval, brick = blocked / error. */
 @theme {
-  --font-sans: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Schibsted Grotesk Variable', 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
   --color-paper: var(--paper);
   --color-surface: var(--surface);
   --color-sunken: var(--sunken);

@@ -1,5 +1,15 @@
 import { randomBytes } from 'node:crypto';
+import { existsSync } from 'node:fs';
 import { z } from 'zod';
+
+// Load apps/api/.env if present (Node's built-in loader; real environment variables win).
+if (process.env.NODE_ENV !== 'test' && existsSync('.env')) {
+  try {
+    process.loadEnvFile('.env');
+  } catch {
+    /* malformed .env: fall back to the process environment */
+  }
+}
 
 const bool = z
   .union([z.boolean(), z.string()])

@@ -23,7 +23,7 @@ describe('api client', () => {
 
   it('turns server validation errors into field errors', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => json(422, { error: { code: 'validation_failed', message: 'Some fields need attention', details: { fields: { email: 'Enter a valid email address' } } } })));
-    const err = await api.post('/auth/register', {}).catch((e) => e);
+    const err = (await api.post('/auth/register', {}).catch((e: unknown) => e)) as ApiError;
     expect(err).toBeInstanceOf(ApiError);
     expect(err.fields.email).toBe('Enter a valid email address');
   });
