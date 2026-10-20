@@ -1,0 +1,99 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Design tokens. Status colours carry product meaning:
+   pine = allowed / done, ochre = needs approval, brick = blocked / error. */
+@theme {
+  --font-sans: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-sunken: var(--sunken);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-soft: var(--brand-soft);
+  --color-pine: var(--pine);
+  --color-pine-soft: var(--pine-soft);
+  --color-ochre: var(--ochre);
+  --color-ochre-soft: var(--ochre-soft);
+  --color-brick: var(--brick);
+  --color-brick-soft: var(--brick-soft);
+}
+
+:root {
+  --paper: #f5f7fa;
+  --surface: #ffffff;
+  --sunken: #eef1f6;
+  --ink: #172033;
+  --muted: #5a6577;
+  --line: #dde2ea;
+  --brand: #3346d3;
+  --brand-ink: #ffffff;
+  --brand-soft: #e7eafc;
+  --pine: #1f7a5c;
+  --pine-soft: #e3f3ec;
+  --ochre: #a86b12;
+  --ochre-soft: #fbf0dc;
+  --brick: #b42318;
+  --brick-soft: #fdeceb;
+  /* Chart series (validated: lightness band, CVD separation, 3:1 contrast on surface). */
+  --series-1: #3346d3;
+  --series-2: #b0307a;
+  color-scheme: light;
+}
+
+.dark {
+  --paper: #121a26;
+  --surface: #182233;
+  --sunken: #0f1622;
+  --ink: #e6ebf3;
+  --muted: #9aa6b8;
+  --line: #2a3648;
+  --brand: #7d8cf7;
+  --brand-ink: #0f1622;
+  --brand-soft: #232d55;
+  --pine: #5cc39b;
+  --pine-soft: #17352c;
+  --ochre: #e0a54a;
+  --ochre-soft: #3a2c14;
+  --brick: #f0857c;
+  --brick-soft: #3d1d1b;
+  --series-1: #6f80ee;
+  --series-2: #c2558f;
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-feature-settings: 'ss01';
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.display {
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+}
+.prose-measure {
+  max-width: 64ch;
+}

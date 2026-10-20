@@ -47,7 +47,8 @@ export function detectInjection(text: string): boolean {
 
 const CURRENCY_SYMBOLS = '[$€£₹¥₩₽₺₪฿₫₦]';
 const CURRENCY_CODES = '(?:USD|EUR|GBP|INR|AUD|CAD|NZD|SGD|AED|SAR|JPY|CNY|CHF|SEK|NOK|DKK|ZAR|BRL|MXN|HKD|Rs\\.?|dollars?|euros?|pounds?|rupees?)';
-const AMOUNT = '(\\d{1,3}(?:[,\\s]\\d{3})+(?:\\.\\d{1,2})?|\\d+(?:\\.\\d{1,2})?)\\s?(k|K)?';
+// Accepts western (250,000) and Indian (2,50,000) digit grouping.
+const AMOUNT = '(\\d{1,3}(?:[,\\s]\\d{2,3})+(?:\\.\\d{1,2})?|\\d+(?:\\.\\d{1,2})?)\\s?(k|K)?';
 const PRICE_RX = new RegExp(`(?:${CURRENCY_SYMBOLS}\\s?${AMOUNT})|(?:${AMOUNT}\\s?${CURRENCY_CODES}\\b)|(?:\\b${CURRENCY_CODES}\\s?${AMOUNT})`, 'gi');
 
 /** Extract monetary amounts mentioned in text. */
