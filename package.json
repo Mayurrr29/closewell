@@ -1,0 +1,27 @@
+{
+  "name": "closewell",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Multi-tenant AI sales agent platform",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "dev": "npm run build -w @closewell/widget && concurrently -n api,web -c blue,magenta \"npm run dev -w @closewell/api\" \"npm run dev -w @closewell/web\"",
+    "build": "npm run build -w @closewell/widget && npm run build -w @closewell/web && npm run build -w @closewell/api",
+    "start": "npm run start -w @closewell/api",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:e2e": "npm run test:e2e -w @closewell/web",
+    "seed": "npm run seed -w @closewell/api",
+    "lint": "npm run typecheck"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "typescript": "5.9.3"
+  }
+}
